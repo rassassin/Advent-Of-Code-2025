@@ -36,6 +36,16 @@ function isRollAcessisble(input, row, col) {
 
 function solveDayFour(input) {
   const partOne = findAccessibleRolls(input);
+
+  return { partOne };
 }
 
-console.log(findAccessibleRolls(input));
+const n = 1000;
+const start = performance.now();
+for (let i = 0; i < n; i++) {
+  solveDayFour(input);
+}
+
+const elapsed = performance.now() - start;
+console.log(solveDayFour(input));
+console.log(elapsed / n);
