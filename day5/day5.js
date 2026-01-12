@@ -27,4 +27,24 @@ function solveDayFive(input) {
   return { solvePartOne };
 }
 
+const n = 1000;
+const start = performance.now();
+for (let i = 0; i < n; i++) {
+  solveDayFive(input);
+}
+
+const elapsed = performance.now() - start;
 console.log(solveDayFive(input));
+console.log(elapsed / n);
+
+function anotherWayToParseInput(input) {
+  let seenEmpty = false;
+  return input.reduce(
+    (result, curr) => {
+      if (curr == "") seenEmpty = true;
+      else result[1 - seenEmpty].push(seenEmpty ? Number(curr) : curr.split("-").map(Number));
+      return result;
+    },
+    [[], []]
+  );
+}
