@@ -21,21 +21,46 @@ function isNumberInRange(number, acceptableRanges) {
   return false;
 }
 
+const orderIds = (acceptableRanges) => acceptableRanges.toSorted((a, b) => a[0] - b[0]);
+
+function getMergedRanges(sortedAcceptableRanges) {
+  for (let i = 0; i < sortedAcceptableRanges.length - 1; i++) {
+    const a = sortedAcceptableRanges[i];
+    const b = sortedAcceptableRanges[i + 1];
+
+    if (b[0] > a[1]) continue;
+    if (b[1] > a[1]) a[1] = b[1];
+
+    sortedAcceptableRanges.splice(i + 1, 1);
+    i--;
+  }
+  return sortedAcceptableRanges;
+}
+
+function findAllFreshIds(acceptableRanges) {
+  const sortedAcceptableRanges = orderIds(acceptableRanges);
+  const mergedRanges = getMergedRanges(sortedAcceptableRanges);
+  return mergedRanges.reduce((acc, curr) => {
+    return acc + curr[1] - curr[0] + 1;
+  }, 0);
+}
+
 function solveDayFive(input) {
   const [numbersToCheck, acceptableRanges] = parseInput(input);
   const solvePartOne = findAvailableIngredients(numbersToCheck, acceptableRanges);
-  return { solvePartOne };
+  const solvePartTwo = findAllFreshIds(acceptableRanges);
+  return { solvePartTwo };
 }
 
-const n = 1000;
-const start = performance.now();
-for (let i = 0; i < n; i++) {
-  solveDayFive(input);
-}
+// const n = 1000;
+// const start = performance.now();
+// for (let i = 0; i < n; i++) {
+//   solveDayFive(input);
+// }
 
-const elapsed = performance.now() - start;
+// const elapsed = performance.now() - start;
 console.log(solveDayFive(input));
-console.log(elapsed / n);
+// console.log(elapsed / n);
 
 function anotherWayToParseInput(input) {
   let seenEmpty = false;
@@ -45,6 +70,6 @@ function anotherWayToParseInput(input) {
       else result[1 - seenEmpty].push(seenEmpty ? Number(curr) : curr.split("-").map(Number));
       return result;
     },
-    [[], []]
+    [[], []],
   );
 }
