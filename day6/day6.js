@@ -27,6 +27,19 @@ function parseInput(input) {
     return verticalNumberArraysAndSymbols;
 }
 
+function parsedInputForPartTwo(input) {
+    let arrayOfNumberArrays = [];
+
+    for (let i = 0; i < 4; i++) {
+        const lineOfNumbers = input[i].split(" ");
+        arrayOfNumberArrays.push(lineOfNumbers);
+    }
+
+    arrayOfNumberArrays.push(input[4].split(" ").filter(x => x))
+
+    return arrayOfNumberArrays
+}
+
 function AddOrMutiliplyNumArrays(parsedInput) {
     let total = 0;
     
@@ -64,4 +77,6 @@ const result = parseInput(input);
 
 // fs.writeFileSync('output.txt', JSON.stringify(result, null, 2));
 
-console.log(daySix(input))
+console.log(parsedInputForPartTwo(input))
+
+// console.log(daySix(input))
